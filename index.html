@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>SunPy in 2021: PyHC Spring Meeting Update</title>
+<meta name="author" content="(Stuart Mumford)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./src/reveal.js/dist/reveal.css"/>
+
+<link rel="stylesheet" href="./src/reveal.js/dist/theme/simple.css" id="theme"/>
+
+<link rel="stylesheet" href="org.css"/>
+<link rel="stylesheet" href="./src/reveal.js/plugin/highlight/monokai.css"/>
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = './src/reveal.js/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide" data-background="./images/background_1.jpg"><h3>SunPy in 2021: PyHC Spring Meeting Update</h3>
+<h4>Stuart Mumford</h4>
+<a href="https://aperio.software"><img style='float: left; width: 30%; margin-top: 100px; height: 25%;' src='images/aperio.svg'/></a><a href="https://sunpy.org"><img style='float: right; width: 30%; margin-top: 100px; height: 25%; margin-right: 5%;' src='images/sunpy.svg'/></a>
+</section>
+
+<section>
+<section id="slide-org89e1566" data-background="./images/background_1.jpg">
+<h2 id="org89e1566">Overview</h2>
+<div class='left'>
+
+<p>
+SunPy consists of a core library, a set of affiliated packages and various tools and infrastructure.
+</p>
+
+<ul>
+<li>Regular releases of the core package: every 6 months</li>
+<li>26 contributors to the latest 3.0 release of the core package</li>
+<li>8 Affiliated Packages</li>
+
+</ul>
+
+</div>
+
+<div class='right'>
+
+
+<div id="orgdcc5b62" class="figure">
+<p><img src="./images/sunpy-github.png" alt="sunpy-github.png" width="500px" />
+</p>
+</div>
+
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org4248891" data-background="./images/background_1.jpg">
+<h2 id="org4248891">Core Package Features</h2>
+<p>
+The core package comprises a core set of tools for solar and heliospheric physics:
+</p>
+
+<ul>
+<li><code>Map</code>: 2D image coordinate aware container class.</li>
+<li><code>Timeseries</code>: A metadata and unit aware wrapper around Pandas with custom loaders for common data.</li>
+<li><code>Fido</code>: A highly extensible and flexible data search and download API for Python.</li>
+<li><code>Coordinates</code>: A comprehensive set of extensions to Astropy's coordinates infrastructure for handling coordinates within the heliosphere.</li>
+
+</ul>
+
+</section>
+<section id="slide-org88bef57" data-background="./images/background_1.jpg">
+<h3 id="org88bef57">New Features in Map</h3>
+<p>
+Many plotting improvements, too many to show here.
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="python" >aia = sunpy.map.Map(AIA_171_IMAGE)
+
+bottom_left = SkyCoord(30*u.deg, -10*u.deg,
+		      frame=HeliographicStonyhurst, obstime=aia.date)
+</code></pre>
+</div>
+
+<div class="org-src-container">
+
+<pre><code class="python" >fig = plt.figure()
+ax = plt.subplot(projection=aia)
+aia.plot(clip_interval=(1, 99.99)*u.percent)
+aia.draw_grid()
+aia.draw_quadrangle(bottom_left, width=20*u.deg, height=60*u.deg,
+		    edgecolor='blue', linewidth=2)
+</code></pre>
+</div>
+
+</section>
+<section id="slide-org34b31b4" data-background="./images/background_1.jpg">
+<h4 id="org34b31b4"></h4>
+
+<div id="org0989183" class="figure">
+<p><img src="./images/map_quadrangle.png" alt="map_quadrangle.png" />
+</p>
+</div>
+
+
+</section>
+<section id="slide-orgd8e802d" data-background="./images/background_1.jpg">
+<h3 id="orgd8e802d">New Features in Fido</h3>
+<p>
+Much improved handling of results
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="python" >from sunpy.net import Fido, attrs as a
+
+results = Fido.search(a.Time('2010/8/1 03:40', '2010/8/1 3:40:10'), 
+		      (a.hek.FL &amp; (a.hek.FL.PeakFlux &gt; 1000)) | a.jsoc.Series('hmi.m_45s')
+		      )
+
+hek_results, jsoc_results = results['hek'], results['jsoc']
+hek_results[('event_peaktime', 'obs_instrument', 'fl_peakflux')]
+</code></pre>
+</div>
+
+<pre class="example">
+   event_peaktime   obs_instrument fl_peakflux
+------------------- -------------- -----------
+2010-08-01T03:40:37            AIA     1027.64
+2010-08-01T03:40:44            AIA     1441.78
+</pre>
+
+
+<div class="org-src-container">
+
+<pre><code class="python" >jsoc_results
+</code></pre>
+</div>
+
+<pre class="example">
+         T_REC          TELESCOP  INSTRUME  WAVELNTH CAR_ROT
+----------------------- -------- ---------- -------- -------
+2010.08.01_03:40:30_TAI  SDO/HMI HMI_FRONT2   6173.0    2099
+</pre>
+</section>
+<section id="slide-orgeeeb99b" data-background="./images/background_1.jpg">
+<h3 id="orgeeeb99b">New Features in Coordinates</h3>
+<p>
+Velocities
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="python" >from astropy.coordinates import SkyCoord
+from sunpy.coordinates import get_body_heliographic_stonyhurst
+
+mars = SkyCoord(get_body_heliographic_stonyhurst('mars', '2021-01-01',
+						include_velocity=True))
+
+mars
+</code></pre>
+</div>
+
+<pre class="example">
+&lt;SkyCoord (HeliographicStonyhurst: obstime=2021-01-01T00:00:00.000, rsun=695700.0 km): (lon, lat, radius) in (deg, deg, AU)
+    (-34.46752135, 1.77496469, 1.50936573)
+ (d_lon, d_lat, d_radius) in (arcsec / s, arcsec / s, km / s)
+    (-0.02016456, -0.00207286, 2.26395654)&gt;
+</pre>
+
+
+<div class="org-src-container">
+
+<pre><code class="python" >mars.heliocentricinertial.velocity.norm()
+</code></pre>
+</div>
+
+<pre class="example">
+24.357552943376874 km / s
+</pre>
+
+</section>
+</section>
+<section>
+<section id="slide-org7548249" data-background="./images/background_1.jpg">
+<h2 id="org7548249">Releases</h2>
+
+</section>
+</section>
+<section>
+<section id="slide-org670e6bc" data-background="./images/background_1.jpg">
+<h2 id="org670e6bc">Affiliated Packages</h2>
+</section>
+</section>
+</div>
+</div>
+<script src="./src/reveal.js/dist/reveal.js"></script>
+<script src="./src/reveal.js/plugin/highlight/highlight.js"></script>
+
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+plugins: [RevealHighlight],
+transition:'fade',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+]
+});
+
+
+</script>
+</body>
+</html>
