@@ -87,13 +87,12 @@ SunPy consists of a core library, a set of affiliated packages and various tools
 
 *** 
 #+begin_src python :session map :exports results :results file
-  plt.savefig('./images/map_quadrangle.png', transparent=True)
+  plt.savefig('./images/map_quadrangle.png', transparent=True, dpi=120)
   './images/map_quadrangle.png'
 #+end_src
 
 #+RESULTS:
 [[file:./images/map_quadrangle.png]]
-
 
 ** New Features in Fido
 
@@ -152,5 +151,38 @@ Velocities
 : 24.357552943376874 km / s
     
 * Releases
-  
+
+  The SunPy core package is on a 6 month "tick tock" release schedule.
+
+  The x.0 releases are supported with bug fixes for a year the x.1 releases for 6 months.
+
+  | Release | Scheduled Date | Actual Date |
+  | v3.1    |     2021-11-05 |             |
+  | v3.0    |     2021-05-07 |             |
+  | v2.1    |     2020-11-06 |  2021-02-22 |
+  | v2.0    |     2020-05-01 |  2020-07-11 |
+  | v1.1    |     2019-11-01 |  2020-01-10 |
+  | v1.0    |     2019-05-03 |  2019-06-01 |
+
 * Affiliated Packages
+
+  New in 2020 was the formalisation of the SunPy Affiliated Package review system. We currently have 8 affiliated packages [[https://sunpy.org/project/affiliated][listed]], two of which are "provisional".
+
+  The review system grades on a "traffic light" scale, if not all the criteria are met then the package can be "provisional" while development continues.
+
+  #+attr_html: :width 400px
+  [[./images/affiliated_packages.png]]
+
+*** Sponsored Packages
+
+    Affiliated packages which are maintained by the SunPy Developers are named "Sponsored", these normally live under the SunPy organisation on GitHub and are overseen by the SunPy Lead Developer and the Board.
+
+    The sponsored packages are:
+    
+    * sunpy Core
+    * ndcube
+    * drms
+    * sunraster
+    * sunkit-image
+    * pyflct
+    * radiospecta
