@@ -186,3 +186,13 @@ Velocities
     * sunkit-image
     * pyflct
     * radiospecta
+
+* Future Priorities
+
+  It's always hard to predict the future but somethings we are working on include:
+
+  * Releasing ndcube 2.0.
+  * Basing ~Map~ on the ~NDCube~ class.
+  * Reworking how we store and modify metadata in ~Map~.
+  * Functionality to regrid images for visualisation and scientific analysis.
+  * Growing the ecosystem of Affiliated Packages.
