@@ -168,6 +168,12 @@ SunPy consists of a core library, a set of affiliated packages and various tools
 [[file:./images/map_draw_limb.png]]
 
 ** New Features in Fido
+#+BEGIN_NOTES
+  * Fido can search and download data from a variety of sources.
+  * VSO, JSOC, HEK, HELIO, etc
+  * Now supports metadata only searches, no file download.
+  * Returns results as a collection Astropy Table objects, allowing easy manipulation of results.
+#+END_NOTES
 
 Much improved handling of results
 
@@ -196,7 +202,12 @@ jsoc_results
 :          T_REC          TELESCOP  INSTRUME  WAVELNTH CAR_ROT
 : ----------------------- -------- ---------- -------- -------
 : 2010.08.01_03:40:30_TAI  SDO/HMI HMI_FRONT2   6173.0    2099
+
 ** New Features in Coordinates
+#+BEGIN_NOTES
+  * SunPy coordinates continues to improve.
+  * Support for differential rotation, coordinates "on a sphere", variable default solar radius, velocities
+#+END_NOTES
 
 Velocities
 
@@ -241,7 +252,7 @@ Velocities
 
   New in 2020 was the formalisation of the SunPy Affiliated Package review system. We currently have 8 affiliated packages [[https://sunpy.org/project/affiliated][listed]], two of which are "provisional".
 
-  The review system grades on a "traffic light" scale, if not all the criteria are met then the package can be "provisional" while development continues.
+  The [[https://sunpy.org/project/affiliated.html#affiliated-package-review][review system]] grades on a "traffic light" scale, if not all the criteria are met then the package can be "provisional" while development continues.
 
   #+attr_html: :width 400px
   [[./images/affiliated_packages.png]]
