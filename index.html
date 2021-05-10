@@ -29,12 +29,13 @@
 <div class="slides">
 <section id="sec-title-slide" data-background="./images/background_1.jpg"><h3>SunPy in 2021: PyHC Spring Meeting Update</h3>
 <h4>Stuart Mumford</h4>
+<h4><small><a href="https://cadair.github.io/PyHC-2021-SunPy-Talk">https://cadair.github.io/PyHC-2021-SunPy-Talk</a></small></h4>
 <a href="https://aperio.software"><img style='float: left; width: 30%; margin-top: 100px; height: 25%;' src='images/aperio.svg'/></a><a href="https://sunpy.org"><img style='float: right; width: 30%; margin-top: 100px; height: 25%; margin-right: 5%;' src='images/sunpy.svg'/></a>
 </section>
 
 <section>
-<section id="slide-org358ea26" data-background="./images/background_1.jpg">
-<h2 id="org358ea26">Overview</h2>
+<section id="slide-orge55dc33" data-background="./images/background_1.jpg">
+<h2 id="orge55dc33">Overview</h2>
 <div class='left'>
 
 <p>
@@ -53,7 +54,7 @@ SunPy consists of a core library, a set of affiliated packages and various tools
 <div class='right'>
 
 
-<div id="orgf64eb0e" class="figure">
+<div id="orgbbdf5d4" class="figure">
 <p><img src="./images/sunpy-github.png" alt="sunpy-github.png" width="500px" />
 </p>
 </div>
@@ -63,8 +64,8 @@ SunPy consists of a core library, a set of affiliated packages and various tools
 </section>
 </section>
 <section>
-<section id="slide-org57c1a4c" data-background="./images/background_1.jpg">
-<h2 id="org57c1a4c">Core Package Features</h2>
+<section id="slide-org0932d64" data-background="./images/background_1.jpg">
+<h2 id="org0932d64">Core Package Features</h2>
 <p>
 The core package comprises a core set of tools for solar and heliospheric physics:
 </p>
@@ -78,8 +79,8 @@ The core package comprises a core set of tools for solar and heliospheric physic
 </ul>
 
 </section>
-<section id="slide-orgb3f512d" data-background="./images/background_1.jpg">
-<h3 id="orgb3f512d">New Features in Map</h3>
+<section id="slide-orgd7c086f" data-background="./images/background_1.jpg">
+<h3 id="orgd7c086f">New Features in Map</h3>
 <aside class="notes">
 <ul>
 <li><code>draw_quadrangle</code></li>
@@ -116,17 +117,17 @@ aia.draw_quadrangle(bottom_left, width=20*u.deg, height=60*u.deg,
 </div>
 
 </section>
-<section id="slide-org821e1cc" data-background="./images/background_1.jpg">
-<h4 id="org821e1cc"></h4>
+<section id="slide-org221a8a2" data-background="./images/background_1.jpg">
+<h4 id="org221a8a2"></h4>
 
-<div id="orgb0c5b2e" class="figure">
+<div id="orge2fd20c" class="figure">
 <p><img src="./images/map_quadrangle.png" alt="map_quadrangle.png" />
 </p>
 </div>
 
 </section>
-<section id="slide-org5809a58" data-background="./images/background_1.jpg">
-<h4 id="org5809a58">New <code>draw_limb</code> functionality</h4>
+<section id="slide-orgce86317" data-background="./images/background_1.jpg">
+<h4 id="orgce86317">New <code>draw_limb</code> functionality</h4>
 <div class="org-src-container">
 
 <pre><code class="python" >fig = plt.figure(figsize=(16, 8))
@@ -147,17 +148,28 @@ plt.legend([limb_aia[0], limb_euvi[0]],
 </div>
 
 </section>
-<section id="slide-org8fa25d1" data-background="./images/background_1.jpg">
-<h4 id="org8fa25d1"></h4>
+<section id="slide-orgd070586" data-background="./images/background_1.jpg">
+<h4 id="orgd070586"></h4>
 
-<div id="org186e36f" class="figure">
+<div id="org2ad3a55" class="figure">
 <p><img src="./images/map_draw_limb.png" alt="map_draw_limb.png" />
 </p>
 </div>
 
 </section>
-<section id="slide-org2f9aab4" data-background="./images/background_1.jpg">
-<h3 id="org2f9aab4">New Features in Fido</h3>
+<section id="slide-org21fb19e" data-background="./images/background_1.jpg">
+<h3 id="org21fb19e">New Features in Fido</h3>
+<aside class="notes">
+<ul>
+<li>Fido can search and download data from a variety of sources.</li>
+<li>VSO, JSOC, HEK, HELIO, etc</li>
+<li>Now supports metadata only searches, no file download.</li>
+<li>Returns results as a collection Astropy Table objects, allowing easy manipulation of results.</li>
+
+</ul>
+
+</aside>
+
 <p>
 Much improved handling of results
 </p>
@@ -194,9 +206,19 @@ hek_results[('event_peaktime', 'obs_instrument', 'fl_peakflux')]
 ----------------------- -------- ---------- -------- -------
 2010.08.01_03:40:30_TAI  SDO/HMI HMI_FRONT2   6173.0    2099
 </pre>
+
 </section>
-<section id="slide-org5a29110" data-background="./images/background_1.jpg">
-<h3 id="org5a29110">New Features in Coordinates</h3>
+<section id="slide-orgf50ad21" data-background="./images/background_1.jpg">
+<h3 id="orgf50ad21">New Features in Coordinates</h3>
+<aside class="notes">
+<ul>
+<li>SunPy coordinates continues to improve.</li>
+<li>Support for differential rotation, coordinates "on a sphere", variable default solar radius, velocities</li>
+
+</ul>
+
+</aside>
+
 <p>
 Velocities
 </p>
@@ -234,8 +256,8 @@ mars
 </section>
 </section>
 <section>
-<section id="slide-orgbeb46ec" data-background="./images/background_1.jpg">
-<h2 id="orgbeb46ec">Releases</h2>
+<section id="slide-org3b8cbdb" data-background="./images/background_1.jpg">
+<h2 id="org3b8cbdb">Releases</h2>
 <p>
 The SunPy core package is on a 6 month "tick tock" release schedule.
 </p>
@@ -302,25 +324,25 @@ The x.0 releases are supported with bug fixes for a year the x.1 releases for 6 
 </section>
 </section>
 <section>
-<section id="slide-org09d4bcf" data-background="./images/background_1.jpg">
-<h2 id="org09d4bcf">Affiliated Packages</h2>
+<section id="slide-org1032d36" data-background="./images/background_1.jpg">
+<h2 id="org1032d36">Affiliated Packages</h2>
 <p>
 New in 2020 was the formalisation of the SunPy Affiliated Package review system. We currently have 8 affiliated packages <a href="https://sunpy.org/project/affiliated">listed</a>, two of which are "provisional".
 </p>
 
 <p>
-The review system grades on a "traffic light" scale, if not all the criteria are met then the package can be "provisional" while development continues.
+The <a href="https://sunpy.org/project/affiliated.html#affiliated-package-review">review system</a> grades on a "traffic light" scale, if not all the criteria are met then the package can be "provisional" while development continues.
 </p>
 
 
-<div id="orgd0fe713" class="figure">
+<div id="org9fb42f7" class="figure">
 <p><img src="./images/affiliated_packages.png" alt="affiliated_packages.png" width="400px" />
 </p>
 </div>
 
 </section>
-<section id="slide-org32f9227" data-background="./images/background_1.jpg">
-<h4 id="org32f9227">Sponsored Packages</h4>
+<section id="slide-orgcac1c0c" data-background="./images/background_1.jpg">
+<h4 id="orgcac1c0c">Sponsored Packages</h4>
 <p>
 Affiliated packages which are maintained by the SunPy Developers are named "Sponsored", these normally live under the SunPy organisation on GitHub and are overseen by the SunPy Lead Developer and the Board.
 </p>
@@ -343,8 +365,8 @@ The sponsored packages are:
 </section>
 </section>
 <section>
-<section id="slide-orgad682ce" data-background="./images/background_1.jpg">
-<h2 id="orgad682ce">Future Priorities</h2>
+<section id="slide-org579a3b3" data-background="./images/background_1.jpg">
+<h2 id="org579a3b3">Future Priorities</h2>
 <p>
 It's always hard to predict the future but somethings we are working on include:
 </p>
