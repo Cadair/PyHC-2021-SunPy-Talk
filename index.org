@@ -1,6 +1,8 @@
 #+REVEAL_ROOT: ./src/reveal.js/
+#+REVEAL_HIGHLIGHT_CSS: %r/plugin/highlight/monokai.css
+#+REVEAL_PLUGINS: (highlight)
 #+REVEAL_MATHJAX_URL: ./src/mathjax/es5/tex-chtml.js
-#+REVEAL_INIT_OPTIONS: transition:fade'
+#+REVEAL_INIT_OPTIONS: transition:'fade'
 #+REVEAL_THEME: simple
 #+REVEAL_DEFAULT_SLIDE_BACKGROUND: ./images/background_1.jpg
 #+REVEAL_TITLE_SLIDE_BACKGROUND: ./images/background_1.jpg
@@ -8,53 +10,147 @@
 #+OPTIONS: num:nil
 #+REVEAL_EXTRA_CSS: org.css
 
-#+TITLE: SunPy: Python for Solar Physics
+#+TITLE: SunPy in 2021: PyHC Spring Meeting Update
 #+AUTHOR: Stuart Mumford
 #+REVEAL_TITLE_SLIDE: <h3>%t</h3>
 #+REVEAL_TITLE_SLIDE: <h4>%a</h4>
 #+REVEAL_TITLE_SLIDE: <a href="https://aperio.software"><img style='float: left; width: 30%%; margin-top: 100px; height: 25%%;' src='images/aperio.svg'/></a><a href="https://sunpy.org"><img style='float: right; width: 30%%; margin-top: 100px; height: 25%%; margin-right: 5%%;' src='images/sunpy.svg'/></a>
 
-* Me
+* Overview
 
 #+REVEAL_HTML: <div class='left'>
 
-Find me online:
+SunPy consists of a core library, a set of affiliated packages and various tools and infrastructure.
 
-- [[http://stuartmumford.uk][stuartmumford.uk]]
-- [[https://matrix.to/#/@cadair:cadair.com][@cadair:cadair.com]] on Matrix
-- [[https://github.com/Cadair][@Cadair]] on GitHub
-- [[https://twitter.com/stuartmumford][@stuartmumford]] on Twitter
+- Regular releases of the core package: every 6 months
+- 26 contributors to the latest 3.0 release of the core package
+- 8 Affiliated Packages
 
 #+REVEAL_HTML: </div>
 
 #+REVEAL_HTML: <div class='right'>
 
 #+attr_html: :width 500px
-[[./images/cadair.jpg]]
+[[./images/sunpy-github.png]]
 
 #+REVEAL_HTML: </div>
 
-# Some Maths
-* Maths!
+* Core Package Features
 
-${n! \over k!(n-k)!} = {n \choose k}$
+  The core package comprises a core set of tools for solar and heliospheric physics:
 
-\begin{equation}
-x=\sqrt{b}
-\end{equation}
+  * ~Map~: 2D image coordinate aware container class.
+  * ~Timeseries~: A metadata and unit aware wrapper around Pandas with custom loaders for common data.
+  * ~Fido~: A highly extensible and flexible data search and download API for Python.
+  * ~Coordinates~: A comprehensive set of extensions to Astropy's coordinates infrastructure for handling coordinates within the heliosphere.
 
-If $a^2=b$ and \( b=2 \), then the solution must be either $$ a=+\sqrt{2} $$ or \[ a=-\sqrt{2} \].
+** New Features in Map
 
-# AIA
-* 
-  :PROPERTIES:
-  :reveal_background: ./images/fulldiskmulticolor.jpg
-  :reveal_background_trans: slide
-  :END:
+   Many plotting improvements, too many to show here.
+   
+#+begin_src python :session map :exports none
+  import matplotlib
+  matplotlib.use('Agg')
 
-# DKIST
-* 
-  :PROPERTIES:
-  :reveal_extra_attr: data-background-video="" data-background-video-loop=true
-  :END:
+  import matplotlib.pyplot as plt
 
+  import astropy.units as u
+  from astropy.coordinates import SkyCoord
+
+  import sunpy.map
+  from sunpy.coordinates import HeliographicStonyhurst
+  from sunpy.data.sample import AIA_171_IMAGE
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python :session map
+  aia = sunpy.map.Map(AIA_171_IMAGE)
+
+  bottom_left = SkyCoord(30*u.deg, -10*u.deg,
+                        frame=HeliographicStonyhurst, obstime=aia.date)
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python :session map
+  fig = plt.figure()
+  ax = plt.subplot(projection=aia)
+  aia.plot(clip_interval=(1, 99.99)*u.percent)
+  aia.draw_grid()
+  aia.draw_quadrangle(bottom_left, width=20*u.deg, height=60*u.deg,
+                      edgecolor='blue', linewidth=2)
+#+end_src
+
+#+RESULTS:
+: Polygon401((30, -10) ...)
+
+*** 
+#+begin_src python :session map :exports results :results file
+  plt.savefig('./images/map_quadrangle.png', transparent=True)
+  './images/map_quadrangle.png'
+#+end_src
+
+#+RESULTS:
+[[file:./images/map_quadrangle.png]]
+
+
+** New Features in Fido
+
+Much improved handling of results
+
+#+begin_src python :session net :exports both
+  from sunpy.net import Fido, attrs as a
+
+  results = Fido.search(a.Time('2010/8/1 03:40', '2010/8/1 3:40:10'), 
+                        (a.hek.FL & (a.hek.FL.PeakFlux > 1000)) | a.jsoc.Series('hmi.m_45s')
+                        )
+
+  hek_results, jsoc_results = results['hek'], results['jsoc']
+  hek_results[('event_peaktime', 'obs_instrument', 'fl_peakflux')]
+#+end_src
+
+#+RESULTS:
+:    event_peaktime   obs_instrument fl_peakflux
+: ------------------- -------------- -----------
+: 2010-08-01T03:40:37            AIA     1027.64
+: 2010-08-01T03:40:44            AIA     1441.78
+
+#+begin_src python :session net :exports both
+jsoc_results
+#+end_src
+
+#+RESULTS:
+:          T_REC          TELESCOP  INSTRUME  WAVELNTH CAR_ROT
+: ----------------------- -------- ---------- -------- -------
+: 2010.08.01_03:40:30_TAI  SDO/HMI HMI_FRONT2   6173.0    2099
+** New Features in Coordinates
+
+Velocities
+
+#+begin_src python :session coords :exports both
+  from astropy.coordinates import SkyCoord
+  from sunpy.coordinates import get_body_heliographic_stonyhurst
+
+  mars = SkyCoord(get_body_heliographic_stonyhurst('mars', '2021-01-01',
+                                                  include_velocity=True))
+
+  mars
+#+end_src
+
+#+RESULTS:
+: <SkyCoord (HeliographicStonyhurst: obstime=2021-01-01T00:00:00.000, rsun=695700.0 km): (lon, lat, radius) in (deg, deg, AU)
+:     (-34.46752135, 1.77496469, 1.50936573)
+:  (d_lon, d_lat, d_radius) in (arcsec / s, arcsec / s, km / s)
+:     (-0.02016456, -0.00207286, 2.26395654)>
+
+#+begin_src python :session coords :exports both
+  mars.heliocentricinertial.velocity.norm()
+#+end_src
+
+#+RESULTS:
+: 24.357552943376874 km / s
+    
+* Releases
+  
+* Affiliated Packages
