@@ -33,8 +33,8 @@
 </section>
 
 <section>
-<section id="slide-org628925a" data-background="./images/background_1.jpg">
-<h2 id="org628925a">Overview</h2>
+<section id="slide-org358ea26" data-background="./images/background_1.jpg">
+<h2 id="org358ea26">Overview</h2>
 <div class='left'>
 
 <p>
@@ -53,7 +53,7 @@ SunPy consists of a core library, a set of affiliated packages and various tools
 <div class='right'>
 
 
-<div id="org34a85ca" class="figure">
+<div id="orgf64eb0e" class="figure">
 <p><img src="./images/sunpy-github.png" alt="sunpy-github.png" width="500px" />
 </p>
 </div>
@@ -63,8 +63,8 @@ SunPy consists of a core library, a set of affiliated packages and various tools
 </section>
 </section>
 <section>
-<section id="slide-org87082fc" data-background="./images/background_1.jpg">
-<h2 id="org87082fc">Core Package Features</h2>
+<section id="slide-org57c1a4c" data-background="./images/background_1.jpg">
+<h2 id="org57c1a4c">Core Package Features</h2>
 <p>
 The core package comprises a core set of tools for solar and heliospheric physics:
 </p>
@@ -78,8 +78,19 @@ The core package comprises a core set of tools for solar and heliospheric physic
 </ul>
 
 </section>
-<section id="slide-orga0b327f" data-background="./images/background_1.jpg">
-<h3 id="orga0b327f">New Features in Map</h3>
+<section id="slide-orgb3f512d" data-background="./images/background_1.jpg">
+<h3 id="orgb3f512d">New Features in Map</h3>
+<aside class="notes">
+<ul>
+<li><code>draw_quadrangle</code></li>
+<li><code>autoalign=True</code> in <code>plot()</code></li>
+<li><code>draw_limb()</code> shows limb from any observer</li>
+<li>History of changes to <code>map.meta</code> are now preserved.</li>
+
+</ul>
+
+</aside>
+
 <p>
 Many plotting improvements, too many to show here.
 </p>
@@ -105,17 +116,48 @@ aia.draw_quadrangle(bottom_left, width=20*u.deg, height=60*u.deg,
 </div>
 
 </section>
-<section id="slide-org8c01503" data-background="./images/background_1.jpg">
-<h4 id="org8c01503"></h4>
+<section id="slide-org821e1cc" data-background="./images/background_1.jpg">
+<h4 id="org821e1cc"></h4>
 
-<div id="org738654a" class="figure">
+<div id="orgb0c5b2e" class="figure">
 <p><img src="./images/map_quadrangle.png" alt="map_quadrangle.png" />
 </p>
 </div>
 
 </section>
-<section id="slide-orga4ccde7" data-background="./images/background_1.jpg">
-<h3 id="orga4ccde7">New Features in Fido</h3>
+<section id="slide-org5809a58" data-background="./images/background_1.jpg">
+<h4 id="org5809a58">New <code>draw_limb</code> functionality</h4>
+<div class="org-src-container">
+
+<pre><code class="python" >fig = plt.figure(figsize=(16, 8))
+
+ax1 = fig.add_subplot(1, 2, 1, projection=map_aia)
+map_aia.plot(axes=ax1)
+map_aia.draw_limb(axes=ax1, color='white')
+map_euvi.draw_limb(axes=ax1, color='red')
+
+ax2 = fig.add_subplot(1, 2, 2, projection=map_euvi)
+map_euvi.plot(axes=ax2)
+limb_aia = map_aia.draw_limb(axes=ax2, color='white')
+limb_euvi = map_euvi.draw_limb(axes=ax2, color='red')
+
+plt.legend([limb_aia[0], limb_euvi[0]],
+	   ['Limb as seen by AIA', 'Limb as seen by EUVI A'])
+</code></pre>
+</div>
+
+</section>
+<section id="slide-org8fa25d1" data-background="./images/background_1.jpg">
+<h4 id="org8fa25d1"></h4>
+
+<div id="org186e36f" class="figure">
+<p><img src="./images/map_draw_limb.png" alt="map_draw_limb.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-org2f9aab4" data-background="./images/background_1.jpg">
+<h3 id="org2f9aab4">New Features in Fido</h3>
 <p>
 Much improved handling of results
 </p>
@@ -153,8 +195,8 @@ hek_results[('event_peaktime', 'obs_instrument', 'fl_peakflux')]
 2010.08.01_03:40:30_TAI  SDO/HMI HMI_FRONT2   6173.0    2099
 </pre>
 </section>
-<section id="slide-orgd38ba9c" data-background="./images/background_1.jpg">
-<h3 id="orgd38ba9c">New Features in Coordinates</h3>
+<section id="slide-org5a29110" data-background="./images/background_1.jpg">
+<h3 id="org5a29110">New Features in Coordinates</h3>
 <p>
 Velocities
 </p>
@@ -192,8 +234,8 @@ mars
 </section>
 </section>
 <section>
-<section id="slide-orgdaf5016" data-background="./images/background_1.jpg">
-<h2 id="orgdaf5016">Releases</h2>
+<section id="slide-orgbeb46ec" data-background="./images/background_1.jpg">
+<h2 id="orgbeb46ec">Releases</h2>
 <p>
 The SunPy core package is on a 6 month "tick tock" release schedule.
 </p>
@@ -260,8 +302,8 @@ The x.0 releases are supported with bug fixes for a year the x.1 releases for 6 
 </section>
 </section>
 <section>
-<section id="slide-org72a6b09" data-background="./images/background_1.jpg">
-<h2 id="org72a6b09">Affiliated Packages</h2>
+<section id="slide-org09d4bcf" data-background="./images/background_1.jpg">
+<h2 id="org09d4bcf">Affiliated Packages</h2>
 <p>
 New in 2020 was the formalisation of the SunPy Affiliated Package review system. We currently have 8 affiliated packages <a href="https://sunpy.org/project/affiliated">listed</a>, two of which are "provisional".
 </p>
@@ -271,14 +313,14 @@ The review system grades on a "traffic light" scale, if not all the criteria are
 </p>
 
 
-<div id="org2af0471" class="figure">
+<div id="orgd0fe713" class="figure">
 <p><img src="./images/affiliated_packages.png" alt="affiliated_packages.png" width="400px" />
 </p>
 </div>
 
 </section>
-<section id="slide-org966377e" data-background="./images/background_1.jpg">
-<h4 id="org966377e">Sponsored Packages</h4>
+<section id="slide-org32f9227" data-background="./images/background_1.jpg">
+<h4 id="org32f9227">Sponsored Packages</h4>
 <p>
 Affiliated packages which are maintained by the SunPy Developers are named "Sponsored", these normally live under the SunPy organisation on GitHub and are overseen by the SunPy Lead Developer and the Board.
 </p>
@@ -301,8 +343,8 @@ The sponsored packages are:
 </section>
 </section>
 <section>
-<section id="slide-org956547c" data-background="./images/background_1.jpg">
-<h2 id="org956547c">Future Priorities</h2>
+<section id="slide-orgad682ce" data-background="./images/background_1.jpg">
+<h2 id="orgad682ce">Future Priorities</h2>
 <p>
 It's always hard to predict the future but somethings we are working on include:
 </p>
@@ -311,7 +353,7 @@ It's always hard to predict the future but somethings we are working on include:
 <li>Releasing ndcube 2.0.</li>
 <li>Basing <code>Map</code> on the <code>NDCube</code> class.</li>
 <li>Reworking how we store and modify metadata in <code>Map</code>.</li>
-<li>Functionality to regrid images for visualisation and scientific analysis.</li>
+<li>Functionality to make regridding of images for visualisation and scientific analysis easier.</li>
 <li>Growing the ecosystem of Affiliated Packages.</li>
 
 </ul>
@@ -321,13 +363,14 @@ It's always hard to predict the future but somethings we are working on include:
 </div>
 <script src="./src/reveal.js/dist/reveal.js"></script>
 <script src="./src/reveal.js/plugin/highlight/highlight.js"></script>
+<script src="./src/reveal.js/plugin/notes/notes.js"></script>
 
 
 <script>
 // Full list of configuration options available here:
 // https://github.com/hakimel/reveal.js#configuration
 Reveal.initialize({
-plugins: [RevealHighlight],
+plugins: [RevealHighlight,RevealNotes],
 transition:'fade',
 multiplex: {
     secret: '', // null if client

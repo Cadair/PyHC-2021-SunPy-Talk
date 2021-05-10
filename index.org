@@ -1,6 +1,6 @@
 #+REVEAL_ROOT: ./src/reveal.js/
 #+REVEAL_HIGHLIGHT_CSS: %r/plugin/highlight/monokai.css
-#+REVEAL_PLUGINS: (highlight)
+#+REVEAL_PLUGINS: (highlight notes)
 #+REVEAL_MATHJAX_URL: ./src/mathjax/es5/tex-chtml.js
 #+REVEAL_INIT_OPTIONS: transition:'fade'
 #+REVEAL_THEME: simple
@@ -17,7 +17,6 @@
 #+REVEAL_TITLE_SLIDE: <a href="https://aperio.software"><img style='float: left; width: 30%%; margin-top: 100px; height: 25%%;' src='images/aperio.svg'/></a><a href="https://sunpy.org"><img style='float: right; width: 30%%; margin-top: 100px; height: 25%%; margin-right: 5%%;' src='images/sunpy.svg'/></a>
 
 * Overview
-
 #+REVEAL_HTML: <div class='left'>
 
 SunPy consists of a core library, a set of affiliated packages and various tools and infrastructure.
@@ -45,6 +44,12 @@ SunPy consists of a core library, a set of affiliated packages and various tools
   * ~Coordinates~: A comprehensive set of extensions to Astropy's coordinates infrastructure for handling coordinates within the heliosphere.
 
 ** New Features in Map
+#+BEGIN_NOTES
+  * ~draw_quadrangle~
+  * ~autoalign=True~ in ~plot()~
+  * ~draw_limb()~ shows limb from any observer
+  * History of changes to ~map.meta~ are now preserved.
+#+END_NOTES
 
    Many plotting improvements, too many to show here.
    
@@ -93,6 +98,74 @@ SunPy consists of a core library, a set of affiliated packages and various tools
 
 #+RESULTS:
 [[file:./images/map_quadrangle.png]]
+
+*** New ~draw_limb~ functionality
+
+#+begin_src python :session map2 :exports none
+  import matplotlib
+  matplotlib.use('Agg')
+
+  import matplotlib.pyplot as plt
+  from reproject import reproject_interp
+
+  import astropy.units as u
+  from astropy.coordinates import SkyCoord
+  from astropy.wcs import WCS
+
+  import sunpy.map
+  from sunpy.coordinates import get_body_heliographic_stonyhurst
+  from sunpy.net import Fido
+  from sunpy.net import attrs as a
+
+  euvi = (a.Source('STEREO_A') &
+          a.Instrument("EUVI") &
+          a.Time('2011-11-01', '2011-11-01T00:10:00'))
+
+  aia = (a.Instrument.aia &
+         a.Sample(24 * u.hour) &
+         a.Time('2011-11-01', '2011-11-02'))
+
+  wave = a.Wavelength(19.5 * u.nm, 19.5 * u.nm)
+
+  res = Fido.search(wave, aia | euvi)
+  files = Fido.fetch(res)
+
+  map_list = sunpy.map.Map(files)
+  map_list.sort(key=lambda m: m.detector)
+  map_aia, map_euvi = map_list
+
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python :session map2
+  fig = plt.figure(figsize=(16, 8))
+
+  ax1 = fig.add_subplot(1, 2, 1, projection=map_aia)
+  map_aia.plot(axes=ax1)
+  map_aia.draw_limb(axes=ax1, color='white')
+  map_euvi.draw_limb(axes=ax1, color='red')
+
+  ax2 = fig.add_subplot(1, 2, 2, projection=map_euvi)
+  map_euvi.plot(axes=ax2)
+  limb_aia = map_aia.draw_limb(axes=ax2, color='white')
+  limb_euvi = map_euvi.draw_limb(axes=ax2, color='red')
+
+  plt.legend([limb_aia[0], limb_euvi[0]],
+             ['Limb as seen by AIA', 'Limb as seen by EUVI A'])
+#+end_src
+
+#+RESULTS:
+: Legend
+
+*** 
+#+begin_src python :session map2 :exports results :results file
+  plt.savefig('./images/map_draw_limb.png', transparent=True, dpi=120)
+  './images/map_draw_limb.png'
+#+end_src
+
+#+RESULTS:
+[[file:./images/map_draw_limb.png]]
 
 ** New Features in Fido
 
@@ -194,5 +267,5 @@ Velocities
   * Releasing ndcube 2.0.
   * Basing ~Map~ on the ~NDCube~ class.
   * Reworking how we store and modify metadata in ~Map~.
-  * Functionality to regrid images for visualisation and scientific analysis.
+  * Functionality to make regridding of images for visualisation and scientific analysis easier.
   * Growing the ecosystem of Affiliated Packages.
